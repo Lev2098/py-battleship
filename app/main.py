@@ -1,18 +1,18 @@
 class Deck:
     def __init__(self, row: int, column: int, is_alive: bool = True) -> None:
-        self.row: int = row
-        self.column: int = column
-        self.is_alive: bool = is_alive
+        self.row = row
+        self.column = column
+        self.is_alive = is_alive
 
 
 class Ship:
     def __init__(self, start: tuple[int, int], end: tuple[int, int]) -> None:
-        self.decks: list[Deck] = self._create_decks(start, end)
-        self.is_drowned: bool = False
+        self.decks = self._create_decks(start, end)
+        self.is_drowned = False
 
     def _create_decks(self, start: tuple[int, int],
                       end: tuple[int, int]) -> list[Deck]:
-        decks: list[Deck] = []
+        decks = []
         start_row, start_col = start
         end_row, end_col = end
 
@@ -44,18 +44,18 @@ class Battleship:
     def __init__(self,
                  ships: list[tuple[tuple[int, int], tuple[int, int]]]
                  ) -> None:
-        self.size: int = 10
-        self.field: list[list[str]] = [["~" for _ in range(self.size)]
-                                       for _ in range(self.size)]
-        self.ships: list[Ship] = [Ship(*ship) for ship in ships]
-        self.ship_cells: dict[Ship, set[tuple[int, int]]] = {}
-        self.hit_cells: set[tuple[int, int]] = set()
+        self.size = 10
+        self.field = [["~" for _ in range(self.size)]
+                      for _ in range(self.size)]
+        self.ships = [Ship(*ship) for ship in ships]
+        self.ship_cells = {}
+        self.hit_cells = set()
         self._place_ships()
 
     def _get_ship_cells(self, start: tuple[int, int],
                         end: tuple[int, int]
                         ) -> list[tuple[int, int]]:
-        cells: list[tuple[int, int]] = []
+        cells = []
         start_row, start_col = start
         end_row, end_col = end
         if start_row == end_row:
@@ -75,16 +75,15 @@ class Battleship:
         row, col = location
         if self.field[row][col] == "~":
             return "Miss!"
-        else:
-            for ship in self.ships:
-                if ship.fire(row, col):
-                    self.field[row][col] = "*"
-                    if ship.is_drowned:
-                        for deck in ship.decks:
-                            self.field[deck.row][deck.column] = "x"
-                        return "Sunk!"
-                    return "Hit!"
-            return "Miss!"
+        for ship in self.ships:
+            if ship.fire(row, col):
+                self.field[row][col] = "*"
+                if ship.is_drowned:
+                    for deck in ship.decks:
+                        self.field[deck.row][deck.column] = "x"
+                    return "Sunk!"
+                return "Hit!"
+        return "Miss!"
 
     def print_field(self) -> None:
         for row in self.field:
