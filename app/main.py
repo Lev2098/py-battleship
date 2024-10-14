@@ -37,7 +37,6 @@ class Ship:
             if all(not d.is_alive for d in self.decks):
                 self.is_drowned = True
             return True
-        return False
 
 
 class Battleship:
@@ -81,7 +80,6 @@ class Battleship:
                         self.field[deck.row][deck.column] = "x"
                     return "Sunk!"
                 return "Hit!"
-        return "Miss!"
 
     def print_field(self) -> None:
         for row in self.field:
