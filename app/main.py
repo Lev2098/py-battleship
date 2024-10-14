@@ -31,7 +31,7 @@ class Ship:
         return None
 
     def fire(self, row: int, column: int) -> bool:
-        deck: Deck | None = self.get_deck(row, column)
+        deck = self.get_deck(row, column)
         if deck and deck.is_alive:
             deck.is_alive = False
             if all(not d.is_alive for d in self.decks):
@@ -48,8 +48,6 @@ class Battleship:
         self.field = [["~" for _ in range(self.size)]
                       for _ in range(self.size)]
         self.ships = [Ship(*ship) for ship in ships]
-        self.ship_cells = {}
-        self.hit_cells = set()
         self._place_ships()
 
     def _get_ship_cells(self, start: tuple[int, int],
